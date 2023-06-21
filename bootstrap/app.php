@@ -1,5 +1,5 @@
 <?php
-
+use Laravel\Fortify\Fortify;
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -40,7 +40,7 @@ $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
 );
-
+Fortify::ignoreRoutes();
 /*
 |--------------------------------------------------------------------------
 | Return The Application
