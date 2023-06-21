@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Password;
 
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Contracts\Support\Responsable;
