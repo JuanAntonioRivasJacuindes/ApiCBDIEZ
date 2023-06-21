@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\Password\NewPasswordController;
-use App\Http\Controllers\PasswordResetLinkController;
+use App\Http\Controllers\Password\PasswordResetLinkController;
 
 /*
 |--------------------------------------------------------------------------
