@@ -7,8 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-use PhpParser\Node\Stmt\TryCatch;
+
 
 class AuthController extends Controller
 {
@@ -33,7 +32,7 @@ class AuthController extends Controller
         ]);
 
         $user->save();
-        $token = $user->createToken(name:'SPA TOKEN')->plainTextToken;
+        $token = $user->createToken(name: 'SPA TOKEN')->plainTextToken;
         return response()->json(['message' => 'Usuario registrado correctamente', 'token' => $token]);
     }
 
@@ -73,15 +72,14 @@ class AuthController extends Controller
         try {
             //code...
             $request->user()->currentAccessToken()->delete();
-            return response()->json(['message' => 'Sesión cerrada correctamente','status'=>true]);
+            return response()->json(['message' => 'Sesión cerrada correctamente', 'status' => true]);
         } catch (\Throwable $th) {
             //throw $th;
-            return response()->json(['message' => 'la sesion no existe','status'=>false]);
+            return response()->json(['message' => 'la sesion no existe', 'status' => false]);
         }
-
     }
     public function whoiam(Request $request)
     {
-        dd($request);
+        return response()->json($request->user()->only(['name', 'email', 'profile_photo_path', "email_verified_at"]));
     }
 }
