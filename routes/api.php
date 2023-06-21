@@ -3,8 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
-use Laravel\Fortify\Http\Controllers\NewPasswordController;
-use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
+use App\Http\Controllers\Password\NewPasswordController;
+use App\Http\Controllers\PasswordResetLinkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +22,12 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'store'])
-->middleware(['guest:'.config('fortify.guard')])
-->name('password.request');
+    ->middleware(['guest:' . config('fortify.guard')])
+    ->name('password.request');
 
-Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
-->middleware(['guest:'.config('fortify.guard')])
-->name('password.reset');
+Route::get('/reset-password/{token}', [NewPasswordController::class, 'store'])
+    ->middleware(['guest:' . config('fortify.guard')])
+    ->name('password.reset');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
