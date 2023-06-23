@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('*', function () {
-    return redirect('http://ruta-de-tu-spa.com');
+    return redirect(env('FRONTEND_URL'));
 });
