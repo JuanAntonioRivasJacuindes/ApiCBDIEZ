@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return "aloha ";
+Route::get('*', function () {
+    return redirect('http://ruta-de-tu-spa.com');
 });
