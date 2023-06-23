@@ -21,13 +21,20 @@ use App\Http\Controllers\Password\PasswordResetLinkController;
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-Route::get('/forgot-password', [PasswordResetLinkController::class, 'store'])
-    ->middleware(['guest:' . config('fortify.guard')])
-    ->name('password.request');
+Route::get('/reset-password/{token}', function ($token, Request $request) {
+    $spaUrl = env('FRONTEND_URL') ."/". 'reset-password/' . $token . '?email=' . $request->query('email');
+    return redirect($spaUrl);
+})->name('password.reset');
 
-Route::get('/reset-password/{token}', [NewPasswordController::class, 'store'])
+
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')])
-    ->name('password.reset');
+    ->name('password.email');
+
+Route::post('/update-password', [NewPasswordController::class, 'store'])
+    ->middleware(['guest:' . config('fortify.guard')])
+    ->name('password.update');
+
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
