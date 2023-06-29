@@ -43,12 +43,11 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 $user = User::where('email', $request->email)->first();
-                $token = $user->createToken(name: 'SPA TOKEN')->plainTextToken;
 
                 return $request->wantsJson()
                     ? response()->json([
                         'message' => 'Usuario registrado correctamente',
-                        'token' => $token
+                        "token" => $user->createToken($request->email)->plainTextToken,
                     ], 200)
                     : redirect()->intended(Fortify::redirects('register'));
             }

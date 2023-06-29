@@ -17,49 +17,6 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
-
-        $user = new User([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        $user->save();
-        $token = $user->createToken(name: 'SPA TOKEN')->plainTextToken;
-        return response()->json(['message' => 'Usuario registrado correctamente', 'token' => $token]);
-    }
-
-    /**
-     * Inicio de sesión del usuario.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-
-        if (!Auth::attempt($request->only('email', 'password'))) {
-
-            return response()->json(['message' => 'auth error', 'status' => False]);
-        }
-
-        $user = $request->user();
-        $token = $user->createToken('SPA Token')->plainTextToken;
-
-        return response()->json(['message' => 'Success', 'status' => True, 'token' => $token]);
-    }
 
     /**
      * Cierre de sesión del usuario.

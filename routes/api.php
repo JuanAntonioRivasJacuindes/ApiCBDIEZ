@@ -23,12 +23,12 @@ $limiter = config('fortify.limiters.login');
 // Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
-Route::post(RoutePath::for('login', '/login'), [AuthenticatedSessionController::class, 'store'])
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware(array_filter([
         'guest:' . config('fortify.guard'),
         $limiter ? 'throttle:' . $limiter : null,
-    ]));
-Route::post(RoutePath::for('logout', '/logout'), [AuthenticatedSessionController::class, 'destroy'])
+    ]))->name('login');
+Route::post( '/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
 Route::get('/reset-password/{token}', function ($token, Request $request) {
@@ -48,5 +48,5 @@ Route::post('/update-password', [NewPasswordController::class, 'store'])
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::post('/whoiam', [AuthController::class, 'whoiam'])->name('whoiam');
+    Route::get('/whoiam', [AuthController::class, 'whoiam'])->name('whoiam');
 });
