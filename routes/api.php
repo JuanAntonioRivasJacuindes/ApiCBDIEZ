@@ -6,6 +6,7 @@ use Laravel\Fortify\RoutePath;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\Password\NewPasswordController;
 use App\Http\Controllers\Password\PasswordResetLinkController;
+use App\Http\Controllers\ProductController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 /*
@@ -28,7 +29,7 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
         'guest:' . config('fortify.guard'),
         $limiter ? 'throttle:' . $limiter : null,
     ]))->name('login');
-Route::post( '/logout', [AuthController::class, 'logout'])
+Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
 Route::get('/reset-password/{token}', function ($token, Request $request) {
@@ -45,8 +46,11 @@ Route::post('/update-password', [NewPasswordController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')])
     ->name('password.update');
 
+Route::resource('/products', ProductController::class, ['except' => ['store', 'update', 'show']]);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    // Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::resource('/products', ProductController::class, ['only' => ['store']])->middleware('permission:create_product');
+    Route::resource('/products', ProductController::class, ['only' => ['update']])->middleware('permission:update_product');
+    Route::resource('/products', ProductController::class, ['only' => ['destroy']])->middleware('permission:delete_product');
     Route::get('/whoiam', [AuthController::class, 'whoiam'])->name('whoiam');
 });
